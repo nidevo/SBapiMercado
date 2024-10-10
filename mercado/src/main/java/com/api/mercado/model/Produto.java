@@ -5,17 +5,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "produto")
 public class Produto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
-	@Column
+	@Column(nullable = false)
 	private String categoria;
-	@Column
+	@Column(nullable = false)
 	private String nome;
-	@Column
+	@Column(nullable = false)
 	private String valor;
 	public Long getId() {
 		return Id;

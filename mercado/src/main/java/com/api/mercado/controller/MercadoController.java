@@ -20,49 +20,43 @@ import com.api.mercado.repository.MercadoRepository;
 
 
 @RestController
-@RequestMapping("/mercado")
+@RequestMapping("mercado")
 public class MercadoController {
 	
 	@Autowired
 	private MercadoRepository repository;
 	
-	@GetMapping
+	@GetMapping("/produtos")
 	public List<Produto> listar(){
 		return repository.findAll();
-		
 	}
 	
-	@GetMapping("/{id}")
-	public Produto listarid(@PathVariable Long id) {
+	@GetMapping("/produtos/{id}")
+	public Produto listarum(@PathVariable Long id) {
 		return repository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado com o ID: " + id));
 	}
 	
-	@PostMapping
-	public void cadastrar(@RequestBody Produto produto) {
+	@PostMapping("/cadastrar")
+	public List<Produto> cadastrar(@RequestBody Produto produto) {
 		repository.save(produto);
-		
+		return repository.findAll();
 	}
 	
-	@PutMapping("/{id}")
-	public void atualizar(@PathVariable Long id, @RequestBody Produto produto) {
-		
+	@PutMapping("/atualizar/{id}")
+	public List<Produto> atualizar(@PathVariable Long id, @RequestBody Produto produto) {
 	    repository.findById(id)
 	        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado com o ID: " + id));
-
-	    
 	    produto.setId(id);
 	    repository.save(produto);
-		
+	    return repository.findAll();
 	}
-	@DeleteMapping("/{id}")
-	public void deletar(@PathVariable Long id) {
+	
+	@DeleteMapping("/deletar/{id}")
+	public List<Produto> deletar(@PathVariable Long id) {
 		Produto produto = repository.findById(id)
 		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado para exclusão com o ID: " + id));
-		
 		repository.delete(produto);
+		return repository.findAll();
 	}
-	
-	
-	
 }
